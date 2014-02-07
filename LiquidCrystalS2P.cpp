@@ -43,7 +43,7 @@
 // output pins
 // 8bit shift register: { [], [], [], [], [], [], [], [] )
 //              					 0   1   2   3   4   5   6   7
-//              					 X   X  DB4 DB5 DB6 DB7  E   RS
+//              					 X   X   E   RS DB4 DB5 DB6 DB7
 //
 
 LiquidCrystal::LiquidCrystal(int s2p_rck, int s2p_sck, int s2p_si)
@@ -55,11 +55,10 @@ LiquidCrystal::LiquidCrystal(int s2p_rck, int s2p_sck, int s2p_si)
   begin(16, 2);  
 }
 
-void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
-
+void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) 
+{
   _numlines = lines;
   _currline = 0;
-
 
   // SEE PAGE 45/46 FOR INITIALIZATION SPECIFICATION!
   // according to datasheet, we need at least 40ms after power rises above 2.7V
@@ -82,7 +81,7 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
 	// second try
 	s2pdriver.write();
 	delayMicroseconds(4500); // wait min 4.1ms
-    
+
   // third go!
 	s2pdriver.write();
   delayMicroseconds(150);
@@ -103,9 +102,9 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
 
   // Initialize to default text direction (for romance languages)
   _displaymode = LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT;
+  
   // set the entry mode
   command(LCD_ENTRYMODESET | _displaymode);
-
 }
 
 /********** high level commands, for the user! */
@@ -246,13 +245,13 @@ void LiquidCrystal::pulseEnable(void) {
 
 void LiquidCrystal::write4bits(uint8_t value) {
   
-	s2pdriver.set(SR_DB(4), (value >> 3) & 0x01);
+	s2pdriver.set(SR_DB(7), (value >> 3) & 0x01);
 	s2pdriver.write();
-	s2pdriver.set(SR_DB(5), (value >> 2) & 0x01);
+	s2pdriver.set(SR_DB(6), (value >> 2) & 0x01);
 	s2pdriver.write();
-	s2pdriver.set(SR_DB(6), (value >> 1) & 0x01);
+	s2pdriver.set(SR_DB(5), (value >> 1) & 0x01);
 	s2pdriver.write();
-	s2pdriver.set(SR_DB(7), (value >> 0) & 0x01);
+	s2pdriver.set(SR_DB(4), (value >> 0) & 0x01);
 	s2pdriver.write();
 	
 	

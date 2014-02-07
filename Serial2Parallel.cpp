@@ -19,6 +19,8 @@
  *               					 0   1   2   3   4   5   6   7
  *              		  		 X   X   E  RS   DB4 DB5 DB6 DB7  
  */
+// 7		6		5		4		3		2		1		0
+// DB7	DB6 DB5	DB4 RS	E 	X		X
 
 Serial2Parallel::Serial2Parallel()
 {
@@ -40,8 +42,12 @@ void Serial2Parallel::init(int rck, int sck, int si)
 	pinMode(_SCK, OUTPUT);
 	pinMode(_SI, OUTPUT);
 	
-	Serial2Parallel::set(0x00);
-	//Serial2Parallel::write();
+	_data_register = 0x00;
+	Serial2Parallel::set(2, HIGH);
+	Serial2Parallel::set(2, HIGH);
+	
+	Serial2Parallel::write();
+	
 }
 
 void Serial2Parallel::set(int position, bool state)
@@ -59,11 +65,6 @@ void Serial2Parallel::set(int position, bool state)
 void Serial2Parallel::set(uint8_t data)
 {
 	_data_register &= data;
-}
-
-void Serial2Parallel::clear()
-{
-	set(0x00);
 }
 
 uint8_t Serial2Parallel::get()

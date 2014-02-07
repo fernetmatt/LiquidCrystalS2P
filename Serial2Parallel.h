@@ -28,7 +28,6 @@ class Serial2Parallel
 		
 		void set(int position, bool state);
 		void set(uint8_t data);
-		void clear();
 		void write();
 		uint8_t get();
 		
